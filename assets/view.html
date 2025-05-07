@@ -1,0 +1,159 @@
+{% extends "challenge.html" %}
+{% block input %}
+</div>
+<div class="d-flex justify-content-center">
+  <style>
+    #tile-container {
+      width: 350px;
+      height: 82px;
+      grid-template-columns: repeat(5, 1fr);
+      display: grid;
+      grid-gap: 5px;
+      padding: 10px;
+      --color-tone-empty: #3a3a3c;
+      --color-tone-tbd: #565758;
+      --color-correct: #538d4e;
+      --color-present: #b59f3b;
+      --color-absent: #3a3a3c;
+    }
+    .tile {
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--color-tone-empty);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+    }
+
+    .tile[data-state='tbd'] {
+      border: 2px solid var(--color-tone-tbd);
+    }
+    .tile[data-state='correct'] {
+      background-color: var(--color-correct);
+      border: 2px solid var(--color-correct);
+    }
+    .tile[data-state='present'] {
+      background-color: var(--color-present);
+      border: 2px solid var(--color-present);
+    }
+    .tile[data-state='absent'] {
+      background-color: var(--color-absent);
+      border: 2px solid var(--color-absent);
+    }
+    .tile[data-animation="pop"] {
+      animation-name: PopIn;
+      animation-duration: 100ms;
+    }
+    @keyframes PopIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      40% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+    }
+    .tile[data-animation='flip-in'] {
+      animation-name: FlipIn;
+      animation-duration: 250ms;
+      animation-timing-function: ease-in;
+    }
+    @keyframes FlipIn {
+      0% {
+        transform: rotateX(0deg);
+      }
+      100% {
+        transform: rotateX(-90deg);
+      }
+    }
+    .tile[data-animation='flip-out'] {
+      animation-name: FlipOut;
+      animation-duration: 250ms;
+      animation-timing-function: ease-in;
+    }
+    @keyframes FlipOut {
+      0% {
+        transform: rotateX(-90deg);
+      }
+      100% {
+        transform: rotateX(0);
+      }
+    }
+    /* NYT Wordle - Tile.module.scss */
+    #tile-container[data-state='shake'] {
+      animation-name: Shake;
+      animation-duration: 600ms;
+    }
+    @keyframes Shake {
+      10%,
+      90% {
+        transform: translateX(-1px);
+      }
+
+      20%,
+      80% {
+        transform: translateX(2px);
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translateX(-4px);
+      }
+
+      40%,
+      60% {
+        transform: translateX(4px);
+      }
+    }
+    .tile[data-animation='win'] {
+      animation-name: Bounce;
+      animation-duration: 1000ms;
+    }
+    @keyframes Bounce {
+      0%,
+      20% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-30px);
+      }
+      50% {
+        transform: translateY(5px);
+      }
+      60% {
+        transform: translateY(-15px);
+      }
+      80% {
+        transform: translateY(2px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+    /* NYT Wordle - Row.module.scss */
+
+  </style>
+  <input
+      id="challenge-id" class="challenge-id" type="hidden"
+      value="{{ challenge.id }}"
+  >
+  <input
+    id="challenge-input" class="challenge-input d-none" 
+    type="text" name="submission"
+    @input="submitChallenge()"
+    placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
+  >
+  <div id="tile-container">
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+  </div>
+{% endblock %}
+
+{% block submit %}
+{% endblock %}
