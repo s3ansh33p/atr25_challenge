@@ -66,17 +66,27 @@ class ATR25ChallengeType(BaseChallenge):
         print("flag_content", flag_content)
         print("submission", submission)
         message += "|"
-        for i in range(len(flag_content)):
-            if i < len(submission):
-                if submission[i] == flag_content[i]:
-                    message += "2"
-                elif submission[i] in flag_content:
-                    message += "1"
-                else:
-                    message += "0"
-            else:
-                message += "0"
 
+        # Track counts of characters in the flag
+        flag_counts = {}
+        for char in flag_content:
+            flag_counts[char] = flag_counts.get(char, 0) + 1
+
+        # First pass: Mark exact matches
+        result = ["0"] * len(flag_content)
+        for i in range(len(flag_content)):
+            if i < len(submission) and submission[i] == flag_content[i]:
+                result[i] = "2"
+                flag_counts[flag_content[i]] -= 1
+
+        # Second pass: Mark partial matches
+        for i in range(len(flag_content)):
+            if i < len(submission) and result[i] == "0" and submission[i] in flag_counts:
+                if flag_counts[submission[i]] > 0:
+                    result[i] = "1"
+                    flag_counts[submission[i]] -= 1
+
+        message += "".join(result)
         return status, message
 
 def load(app):

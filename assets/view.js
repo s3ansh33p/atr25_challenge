@@ -163,12 +163,23 @@ function observeResponse() {
             : "unknown";
 
           alertElement.style.display = "none";
+
+          if (status === "already_solved" || status === "paused") {
+            alertElement.style.display = "block";
+            alertElement.querySelector("strong").textContent = message;
+            observer.disconnect();
+            return;
+          }
+
           const nextFiveChars = message.split("|")[1]?.slice(0, 5);
           if (!nextFiveChars) {
             return;
           }
           revealLetters(nextFiveChars);
           observer.disconnect();
+
+          window["REGISTERED_HOOK"] = false;
+          CTFd.lib.$("#challenge-window").off("keydown", logDigitKeypress);
 
           const endMessage = {
             correct: "Congratulations, you got into the vault! We hope you had fun :D",
