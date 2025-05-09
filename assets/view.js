@@ -190,6 +190,17 @@ function observeResponse() {
             setTimeout(() => {
               alertElement.style.display = "block";
               alertElement.querySelector("strong").textContent = endMessage[status];
+              // inject header to disable
+              if (status == "incorrect" && !window["DISABLE_VIDEO"]) {
+                if (window["VIDEO_RENDERED"] === undefined) {
+                  window["VIDEO_RENDERED"] = true;
+                  const videoElement = document.createElement("video");
+                  videoElement.src = "https://dn720407.ca.archive.org/0/items/rick-roll/Rick%20Roll.mp4";
+                  videoElement.autoplay = true;
+                  videoElement.loop = true;
+                  notificationRow.appendChild(videoElement);
+                }
+              }
             }, 2000);
           }
         }
