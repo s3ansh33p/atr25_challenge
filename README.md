@@ -1,4 +1,4 @@
-Custom challenge type plugin for CTFd, inspired by Wordle, used in ComSSA's 2025 ATR.
+Custom challenge type plugin for CTFd, inspired by Wordle, used in ComSSA's 2025 ATR. Supports keypress and on-screen keys. Uses NYT code as referenced in `view.html`.
 
 1. Place the `atr25_challenge` folder in your CTFd `CTFd/plugins/` directory.
 2. Restart your CTFd server.
@@ -10,3 +10,11 @@ To disable Rickrock on an incorrect guess, add the following to your theme heade
 window["DISABLE_VIDEO"] = true;
 </script>
 ```
+
+Screenshots - Incorrect:
+
+![docs/incorrect.png](docs/incorrect.png)
+
+Screenshots - Correct:
+
+![docs/correct.png](docs/correct.png)
