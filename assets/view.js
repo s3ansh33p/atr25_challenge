@@ -122,6 +122,13 @@ async function revealLetters(result) {
     }
     setTimeout(function() {
       revealLetter(ROW_STATE[i], i, state[result[i]]);
+      if (i === result.length - 1) {
+        setTimeout(function() {
+          for (let j = 0; j < ROW_STATE.length; j++) {
+            updateKeyState(ROW_STATE[j], state[result[j]]);
+          }
+        }, 500);
+      }
     }, i * 250);
   }
 
@@ -135,6 +142,19 @@ async function revealLetters(result) {
       }
     }, 1500);
   }
+}
+
+function updateKeyState(key, newState) {
+  const btns = document.querySelectorAll('.key');
+  btns.forEach(btn => {
+    if (btn.textContent.trim() === key) {
+      const order = { absent: 0, present: 1, correct: 2 };
+      const prev = btn.getAttribute('data-state');
+      if (!prev || order[newState] > order[prev]) {
+        btn.setAttribute('data-state', newState);
+      }
+    }
+  });
 }
 
 // This is really bad :D - I'm tired though so we'll have to live with the jankiness
